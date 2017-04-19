@@ -25,16 +25,17 @@ class Oystercard
 
   def touch_out
     self.in_journey = false
+    @entry_station = nil
     deduct
   end
 
   def in_journey?
-    @in_journey
+    !!@entry_station
   end
 
 
   private
-  attr_writer :deduct 
+  attr_writer :deduct
   attr_writer :balance
 
   def increment_balance(amount)
