@@ -1,5 +1,7 @@
+require './lib/journey'
+
 class Oystercard
-  attr_reader :limit, :balance, :entry_station, :exit_station, :journeys
+  attr_reader :limit, :balance
   attr_writer :in_journey
 
   DEFAULT_LIMIT = 90
@@ -9,9 +11,7 @@ class Oystercard
     @balance = balance
     @limit = limit
     @in_journey = false
-    @entry_station = []
-    @exit_station = []
-    @journeys = {}
+    @journey = Journey.new
   end
 
   def top_up(amount = 0)
@@ -22,18 +22,14 @@ class Oystercard
   def touch_in(station)
     raise "Funds too low" if self.balance < FARE
     self.in_journey = true
-    @entry_station << station
+    @journey.entry_station << station
   end
 
   def touch_out(station)
     self.in_journey = false
     deduct
-    @exit_station << station
-    journey
-  end
-
-  def journey
-    @journeys = Hash[@entry_station.zip(@exit_station)]
+    @journey.exit_station << station
+    @journey.finish
   end
 
   def in_journey?
