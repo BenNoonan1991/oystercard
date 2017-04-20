@@ -63,4 +63,13 @@ describe Oystercard do
         expect { oystercard.touch_out(station) }.to change{oystercard.balance}.by(-Oystercard::FARE)
       end
     end
+
+    describe '@journeys' do
+      it 'check that journey is created after touching in/out' do
+        oystercard.top_up(10)
+        oystercard.touch_in(station)
+        oystercard.touch_out(station)
+        expect(oystercard.journeys).not_to be_empty
+      end
+    end
 end
