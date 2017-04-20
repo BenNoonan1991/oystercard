@@ -40,7 +40,6 @@ class Oystercard
     !!@in_journey
   end
 
-
   private
   attr_writer :deduct
   attr_writer :balance
